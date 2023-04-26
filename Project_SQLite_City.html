@@ -11,7 +11,7 @@
 		<br> Вывести в итоговую таблицу по три самых высоких здания из каждого района города.</h2>
 	<h2 class="header_first">1. Создание и заполнение таблиц</h2>
 	<h3 class="header_second">Создание таблицы районов:</h3>
-	<div><pre> 
+	<div class="code_block"><pre> 
 		CREATE TABLE District (
 			DistrictID integer PRIMARY KEY AUTOINCREMENT, 
 			DistrictName text NOT NULL
@@ -20,14 +20,14 @@
 		SELECT * FROM District d ;
 	</pre></div>
 	<h3 class="header_second">Заполнение таблицы районов:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		INSERT INTO District (DistrictName) 
 		VALUES ('Central District'), ('Rail District'), ('October District');
 
 		SELECT * FROM District d ;
 	</pre></div>
 	<h3 class="header_second">Создание таблицы улиц:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		CREATE TABLE Street (
 			StreetID integer PRIMARY KEY AUTOINCREMENT, 
 			StreetName text NOT NULL,
@@ -39,17 +39,17 @@
 	</pre></div>
 	<h3 class="header_second"><mark>Включение зависимости для внешнего ключа.</mark> В SQLite3 необходимо включать проверку 
 		ограничения по внешним ключам при каждом подключении.</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		PRAGMA foreign_keys;  /*проверка на включение 0-выключена, 1-включена */
 
 		PRAGMA foreign_keys = ON;
 	</pre></div>
 	<h3>Тестовое заполнение на проверку связей:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		INSERT INTO Street (StreetName, DistrictID) values ('Michurina', 10);
 	</pre></div>
 	<h3 class="header_second">Заполнение таблицы улиц:</h3>
-	<div><pre>	
+	<div class="code_block"><pre>	
 		INSERT INTO Street (StreetName, DistrictID) values 
 			('Michurina',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
 			('Gogolya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
@@ -67,7 +67,7 @@
 		SELECT COUNT(*) FROM Street s ;
 	</pre></div>
 	<h3 class="header_second">Создание таблицы зданий:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		CREATE TABLE Building (
 			BuildingID integer PRIMARY KEY AUTOINCREMENT, 
 			BuildingNum text NOT NULL,
@@ -82,7 +82,7 @@
 		SELECT * FROM Building b ;
 	</pre></div>
 	<h3 class="header_second">Тестовое заполнение на проверку связей и пустого значения, далее заполнение таблицы зданий:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
 			values ('1', 15, 10, 10);
 
@@ -131,16 +131,16 @@
 	</pre></div>
 	<h2 class="header_first">2. Запросы в БД</h2>
 	<h3 class="header_second">Запрос на список созданных таблиц:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		SELECT name FROM sqlite_master WHERE type='table';
 	</pre></div>
 	<h3 class="header_second">Таблица зданий с указанием наименовай улиц и районов через JOIN:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		SELECT * FROM Building JOIN Street ON Building.StreetID = Street.StreetID JOIN District ON Building.DistrictID = District.DistrictID 
 		ORDER BY SumStorey DESC, DistrictName DESC;
 	</pre></div>
 	<h3 class="header_second">3 самых высоких здания отдельно по районам через JOIN 3-х таблиц:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		SELECT * FROM Building JOIN Street ON Building.StreetID = Street.StreetID JOIN District ON Building.DistrictID = District.DistrictID
 		WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
 
@@ -153,7 +153,7 @@
 		WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 	</pre></div>
 	<h3 class="header_second">3 самых высоких здания по районам в более читаемом виде через коррелирующий запрос:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		SELECT BuildingID, 
 			BuildingNum,
 			(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
@@ -183,14 +183,14 @@
 				WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 	</pre></div>
 	<h3 class="header_second">9 самых высоких зданий по районам в одной таблице (UNION не работает, если перед ним стоит ORDER BY):</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		SELECT * FROM Building JOIN Street ON Building.StreetID = Street.StreetID JOIN District ON Building.DistrictID = District.DistrictID
 		WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3, 
 		AND DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3, 
 		AND DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
 	</pre></div>
 	<h3 class="header_second">Так как UNION не работает, если перед ним стоит ORDER BY, то создаю 3 виртуальные таблицы с 3 макс высокими домами по районам и объединяю:</h3>
-	<div><pre>
+	<div class="code_block"><pre>
 		CREATE VIEW October_3_Max_Storey AS
 		SELECT BuildingID, 
 			BuildingNum,
