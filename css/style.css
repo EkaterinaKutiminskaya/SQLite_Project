@@ -1,0 +1,42 @@
+html, body {
+    margin: 0;      /*чтобы убрать отступы по умолчанию в разных браузерах*/
+    padding: 0;     /*чтобы убрать отступы по умолчанию в разных браузерах*/
+    height: 100%;
+    background-color: rgb(238, 246, 250);
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
+    
+}
+
+ .header {
+    background-color: bisque;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.content {
+    background-color: rgb(255, 236, 213);
+    display: inline-block;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#h3_2_5 {
+    color: brown;
+}
+
+.code_block {
+    background-color: rgba(110, 94, 94, 0.5);    
+    border: 1px solid grey; 
+    display: block;                          /*размещение по центру по горизонтали*/
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    box-sizing: border-box;
+}
+
+
