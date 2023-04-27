@@ -25,8 +25,15 @@ body {
     margin: 0 auto;
 }
 
+.footer {
+    background-color: bisque;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
 #h3_2_5 {
-    color: brown;
+    color: rgb(219, 17, 17);
 }
 
 .code_block {
@@ -39,4 +46,24 @@ body {
     box-sizing: border-box;
 }
 
+.content_header_first, .content_header_second {
+    padding-left: 50px;
+} 
 
+pre {
+    margin-left: -200px;
+   
+}
+
+.color_text {
+    color: brown;
+}
+
+.image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;   
+    margin-top: 20px;    
+    margin-bottom: 20px;            
+    
+}
