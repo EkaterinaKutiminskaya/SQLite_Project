@@ -95,17 +95,16 @@
 			<div class="code_block">
 				<pre>	
 				INSERT INTO Street (StreetName, DistrictID) 
-					VALUES 
-					('Michurina',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
-					('Gogolya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
-					('RedStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
-					('Narymskaya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
-					('905goda',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
-					('RailStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
-					('LineStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
-					('OctoberStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%')),
-					('Kirova',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%')),
-					('Bogatkova',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%'));
+					VALUES ('Michurina',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
+						('Gogolya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
+						('RedStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
+						('Narymskaya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
+						('905goda',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
+						('RailStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
+						('LineStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
+						('OctoberStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%')),
+						('Kirova',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%')),
+						('Bogatkova',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%'));
 
 				SELECT * FROM Street s ;
 
@@ -217,7 +216,7 @@
 				SELECT * FROM Building 
 					JOIN Street ON Building.StreetID = Street.StreetID 
 					JOIN District ON Building.DistrictID = District.DistrictID 
-					ORDER BY SumStorey DESC, DistrictName DESC;
+				ORDER BY SumStorey DESC, DistrictName DESC;
 				</pre>
 			</div>
 
@@ -232,19 +231,19 @@
 				SELECT * FROM Building 
 					JOIN Street ON Building.StreetID = Street.StreetID 
 					JOIN District ON Building.DistrictID = District.DistrictID
-					WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
+				WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
 
 
 				SELECT * FROM Building 
 					JOIN Street ON Building.StreetID = Street.StreetID 
 					JOIN District ON Building.DistrictID = District.DistrictID
-					WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
+				WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
 
 
 				SELECT * FROM Building 
 					JOIN Street ON Building.StreetID = Street.StreetID 
 					JOIN District ON Building.DistrictID = District.DistrictID
-					WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
+				WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 				</pre>
 			</div>
 
@@ -264,36 +263,33 @@
 
 			<div class="code_block">
 				<pre>
-				SELECT 
-					BuildingID, 
+				SELECT BuildingID, 
 					BuildingNum,
 					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
 					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
 					SumStorey, 
 					SumRoom 
-					FROM Building
-					WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
+				FROM Building
+				WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
 				
-				SELECT 
-					BuildingID, 
+				SELECT BuildingID, 
 					BuildingNum,
 					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
 					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
 					SumStorey, 
 					SumRoom 
-					FROM Building
-					WHERE DistrictName LIKE 'Rai%' ORDER BY SumStorey DESC LIMIT 3;
+				FROM Building
+				WHERE DistrictName LIKE 'Rai%' ORDER BY SumStorey DESC LIMIT 3;
 					
 					
-				SELECT 
-					BuildingID, 
+				SELECT BuildingID, 
 					BuildingNum,
 					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
 					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
 					SumStorey, 
 					SumRoom 
-					FROM Building
-					WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
+				FROM Building
+				WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 				</pre>
 			</div>
 
@@ -316,7 +312,7 @@
 				SELECT * FROM Building 
 					JOIN Street ON Building.StreetID = Street.StreetID 
 					JOIN District ON Building.DistrictID = District.DistrictID
-					WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3, 
+				WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3, 
 					AND DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3, 
 					AND DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
 				</pre>
@@ -332,39 +328,36 @@
 			<div class="code_block">
 				<pre>
 				CREATE VIEW October_3_Max_Storey AS
-				SELECT 
-					BuildingID, 
+				SELECT BuildingID, 
 					BuildingNum,
 					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
 					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
 					SumStorey, 
 					SumRoom 
-					FROM Building
-					WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
+				FROM Building
+				WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
 					
 
 				CREATE VIEW Rail_3_Max_Storey AS
-				SELECT 
-					BuildingID, 
+				SELECT BuildingID, 
 					BuildingNum,
 					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
 					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
 					SumStorey, 
 					SumRoom 
-					FROM Building
-					WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
+				FROM Building
+				WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
 					
 					
 				CREATE VIEW Cent_3_Max_Storey AS
-				SELECT 
-					BuildingID, 
+				SELECT BuildingID, 
 					BuildingNum,
 					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
 					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
 					SumStorey, 
 					SumRoom 
-					FROM Building
-					WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
+				FROM Building
+				WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 					
 					
 				SELECT * FROM October_3_Max_Storey;
