@@ -20,7 +20,7 @@
 
     SELECT * FROM District d ;
 
-
+![District_Table] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/districtTable.png)
 
 #### Создание таблицы улиц:
 
@@ -42,6 +42,8 @@
 
 	PRAGMA foreign_keys = ON;
 
+![Key_Status] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/foreignKeyStatus.png)
+
 
 
 #### Тестовое заполнение на проверку связей:
@@ -49,6 +51,7 @@
 	INSERT INTO Street (StreetName, DistrictID) VALUES ('Michurina', 10);
 
 
+![Key_failed] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/foreignKeyFailed.png)
 
 #### Заполнение таблицы улиц:
 
@@ -69,7 +72,7 @@
 
 	SELECT COUNT(*) FROM Street s ;
 
-
+![Street_Table] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/streetTable.png)
 
 #### Создание таблицы зданий:
 
@@ -93,6 +96,7 @@
 	INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
 	  VALUES ('1', 15, 10, 10);
 
+!(Empty_Value) [https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/emptyValue.png]
 
 	INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
 	  VALUES (
@@ -136,7 +140,7 @@
 
 	SELECT COUNT(*) FROM Building b ;
 
-
+![Building_Table] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/buildingTable.png)
 
 ### *Запросы в БД*
 
@@ -144,7 +148,7 @@
 
 	SELECT name FROM sqlite_master WHERE type='table';
 
-
+![Table_DB] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/tableDB.png)
 
 #### Таблица зданий с указанием наименовай улиц и районов через JOIN: 
 
@@ -153,7 +157,7 @@
 		JOIN District ON Building.DistrictID = District.DistrictID 
 	ORDER BY SumStorey DESC, DistrictName DESC;
 
-
+![JOIN] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/JOIN.png)
 
 #### 3 самых высоких здания отдельно по районам через JOIN 3-х таблиц:
 
@@ -162,17 +166,19 @@
 		JOIN District ON Building.DistrictID = District.DistrictID
 	WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
 
+![Oct_District_3] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/octDistrict3.png)
 
 	SELECT * FROM Building 
 		JOIN Street ON Building.StreetID = Street.StreetID 
 		JOIN District ON Building.DistrictID = District.DistrictID
 	WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
 
+![Rail_District_3] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/railDistrict3.png)
 
 	SELECT * FROM Building JOIN Street ON Building.StreetID = Street.StreetID JOIN District ON Building.DistrictID = District.DistrictID
 	WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 
-
+![Cent_District_3] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/centDistrict3.png)
 
 #### 3 самых высоких здания по районам в более читаемом виде через коррелирующий запрос: 
 
@@ -185,6 +191,7 @@
 		FROM Building
 		WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
 	
+![Oct_District_3_short] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/octDistrict3short.png)
 	
 	SELECT BuildingID, 
 			BuildingNum,
@@ -195,7 +202,8 @@
 		FROM Building
 		WHERE DistrictName LIKE 'Rai%' ORDER BY SumStorey DESC LIMIT 3;
 	
-	
+![Rail_District_3_short] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/railDistrict3short.png)
+
 	SELECT BuildingID, 
 			BuildingNum,
 			(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
@@ -205,7 +213,7 @@
 		FROM Building
 		WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 	
-	
+![Cent_District_3_short] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/centDistrict3short.png)
 
 #### Неудачная попытка вывести 9 самых высоких зданий по районам в одной таблице:
 
@@ -216,7 +224,7 @@
 		AND DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3, 
 		AND DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
 
-	
+![Syntax_Error] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/syntaxError.png)
 	
 #### Создаем 3 виртуальные таблицы с тремя максимально высокими домами по районам и объединяем
 #### (UNION не работает, если перед ним стоит ORDER BY):
@@ -265,5 +273,7 @@
 	SELECT * FROM Rail_3_Max_Storey
 	UNION ALL
 	SELECT * FROM Cent_3_Max_Storey;	
+
+![Result] (https://github.com/EkaterinaKutiminskaya/SQLite_Project/blob/19ea05ae07c0b187e3ef869a7f2968e38ef15c59/img/result.png)
 
 #### *Project by Ekaterina Kutiminskaya*
