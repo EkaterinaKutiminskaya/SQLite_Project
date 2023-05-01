@@ -82,7 +82,15 @@ body {
 
 
 pre {
-    margin-left: -100px;
+    display: block;
+    margin-left: -250px;
+    max-width: 90%;
+    overflow-x: auto;
+    white-space: pre-wrap;       /* варианты переноса строки в разных браузерах css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
    
 }
 
@@ -93,7 +101,8 @@ pre {
     margin-right: auto;   
     margin-top: 20px;    
     margin-bottom: 20px;          
-    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);  
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5); 
+    max-width: 100%; 
     
 }
 
@@ -101,10 +110,11 @@ pre {
 .code_block {
     background-color: rgba(240, 231, 231, 0.4);    
     border: 1px solid rgb(201, 184, 184); 
-    display: block;                       
+    border-radius: 5px;
+    display: inline-block;                       
     margin-left: auto;
     margin-right: auto; 
-    width: 80%;
+    width: 100%; 
     box-sizing: border-box;
 }
  
