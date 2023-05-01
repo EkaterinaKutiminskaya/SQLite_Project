@@ -9,378 +9,456 @@
 </head>
 <body>
 	<div class="main">
-		<div class="header">
-			<h2 id="purpose" class="header_first">
-				<i>Цель:</i> Создать базу данных по зданиям в разных районах города. 
-				<br> 
-				Вывести в итоговую таблицу по три самых высоких здания из каждого района города.</h2>
-		</div>		
-		<div class="content">
-			<h2 id="add_table_block" class="content_header_first">
-				1. Создание и заполнение таблиц</h2>
-			
-			<h3 id="h3_1_1" class="content_header_second">Создание таблицы районов:</h3>
-
-			<div class="code_block">
-				<pre> 
-				CREATE TABLE District (
-					DistrictID integer PRIMARY KEY AUTOINCREMENT, 
-					DistrictName text NOT NULL
-				);
-
-				SELECT * FROM District d ;
-				</pre>
-			</div>
-
-			<h3 id="h3_1_2" class="content_header_second">Заполнение таблицы районов:</h3>
-
-			<div class="code_block">
-				<pre>
-				INSERT INTO District (DistrictName) 
-					VALUES ('Central District'), ('Rail District'), ('October District');
-
-				SELECT * FROM District d ;
-				</pre>
-			</div>
-			
-			<div class="content_image">
-				<img src="img/districtTable.png" class="image">
-			</div>
-
-			<h3 id="h3_1_3" class="content_header_second">Создание таблицы улиц:</h3>
-
-			<div class="code_block">
-				<pre>
-				CREATE TABLE Street (
-					StreetID integer PRIMARY KEY AUTOINCREMENT, 
-					StreetName text NOT NULL,
-					DistrictID integer NOT NULL,
-					FOREIGN KEY (DistrictID) REFERENCES District (DistrictID) ON UPDATE CASCADE
-				);
-				
-				SELECT * FROM Street s ;
-				</pre>
-			</div>
-
-			<h3 id="h3_1_4" class="content_header_second"><span class="color_text">Включение зависимости для внешнего ключа.</span> В SQLite3 необходимо включать проверку 
-				ограничения по внешним ключам при каждом подключении.</h3>
-
-			<div class="code_block">
-				<pre>
-				PRAGMA foreign_keys;  /*проверка на включение 0-выключена, 1-включена */
-
-				PRAGMA foreign_keys = ON;
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/foreignKeyStatus.png" class="image">
-			</div>
-
-			<h3 id="h3_1_5" class="content_header_second"> Тестовое заполнение на проверку связей:</h3>
-
-			<div class="code_block">
-				<pre>
-				INSERT INTO Street (StreetName, DistrictID) 
-					VALUES ('Michurina', 10);
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/foreignKeyFailed.png" class="image">
-			</div>
-
-			<h3 id="h3_1_6" class="content_header_second">Заполнение таблицы улиц:</h3>
-
-			<div class="code_block">
-				<pre>	
-				INSERT INTO Street (StreetName, DistrictID) 
-					VALUES ('Michurina',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
-						('Gogolya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
-						('RedStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
-						('Narymskaya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
-						('905goda',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
-						('RailStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
-						('LineStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
-						('OctoberStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%')),
-						('Kirova',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%')),
-						('Bogatkova',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%'));
-
-				SELECT * FROM Street s ;
-
-				SELECT COUNT(*) FROM Street s ;
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/streetTable.png" class="image">
-			</div>
-
-			<h3 id="h3_1_7" class="content_header_second">Создание таблицы зданий:</h3>
-
-			<div class="code_block">
-				<pre>
-				CREATE TABLE Building (
-					BuildingID integer PRIMARY KEY AUTOINCREMENT, 
-					BuildingNum text NOT NULL,
-					StreetID integer NOT NULL, 
-					DistrictID integer NOT NULL, 
-					SumStorey integer NOT NULL, 
-					SumRoom integer NOT NULL,
-					FOREIGN KEY (StreetID) REFERENCES Street(StreetID) ON UPDATE CASCADE,
-					FOREIGN KEY (DistrictID) REFERENCES District(DistrictID) ON UPDATE CASCADE
-				);
-
-				SELECT * FROM Building b ;
-				</pre>
-			</div>
-
-			<h3 id="h3_1_8" class="content_header_second">Тестовое заполнение на проверку связей и пустого значения, далее заполнение таблицы зданий:</h3>
-
-			<div class="code_block">
-				<pre>
-				INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
-					VALUES ('1', 15, 10, 10);
-
-
-				INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
-					VALUES 
-					('1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 10, 398);
-
-
-				INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
-					VALUES
-					('38', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 9, 504),
-					('12', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 5, 40),
-					('50', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 5, 10),
-					('51', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 5, 20),
-					('84', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 30, 158),
-					('38', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 6, 34),
-					('21', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 12, 224),
-					('9', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 15, 468),
-					('71', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 16, 84),
-					('80', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 17, 150),
-					('12', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 7, 35),
-					('81', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 9, 64),
-					('50', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 28, 545),
-					('2', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 15, 350),
-					('15', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 6, 70),
-					('98', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 25, 389),
-					('107', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 20, 504),
-					('8/1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 9, 622),
-					('8/2', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 9, 524),
-					('8/3', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 5, 60),
-					('40a', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 30, 1052),
-					('21b', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 17, 452),
-					('40a/1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 13, 65),
-					('252', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 18, 54),
-					('19', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 5, 70),
-					('24', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 17, 108),
-					('18', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 22, 824),
-					('15', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 26, 98),
-					('144', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 27, 542);
-
-
-				SELECT * FROM Building b ;
-
-				SELECT COUNT(*) FROM Building b ;
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/emptyValue.png" class="image">
-			</div>
-
-			<div class="content_image">
-				<img src="img/buildingTable.png" class="image">
-			</div>
-
-			<h2 id="requests_block" class="content_header_first">2. Запросы в БД</h2>
-
-			<h3 id="h3_2_1" class="content_header_second">Запрос на список созданных таблиц:</h3>
-
-			<div class="code_block">
-				<pre>
-				SELECT name FROM sqlite_master WHERE type='table';
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/tableDB.png" class="image">
-			</div>
-
-			<h3 id="h3_2_2" class="content_header_second">Таблица зданий с указанием наименовай улиц и районов через JOIN:</h3>
-
-			<div class="code_block">
-				<pre>
-				SELECT * FROM Building 
-					JOIN Street ON Building.StreetID = Street.StreetID 
-					JOIN District ON Building.DistrictID = District.DistrictID 
-				ORDER BY SumStorey DESC, DistrictName DESC;
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/JOIN.png" class="image">
-			</div>
-
-			<h3 id="h3_2_3" class="content_header_second">3 самых высоких здания отдельно по районам через JOIN 3-х таблиц:</h3>
-
-			<div class="code_block">
-				<pre>
-				SELECT * FROM Building 
-					JOIN Street ON Building.StreetID = Street.StreetID 
-					JOIN District ON Building.DistrictID = District.DistrictID
-				WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
-
-
-				SELECT * FROM Building 
-					JOIN Street ON Building.StreetID = Street.StreetID 
-					JOIN District ON Building.DistrictID = District.DistrictID
-				WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
-
-
-				SELECT * FROM Building 
-					JOIN Street ON Building.StreetID = Street.StreetID 
-					JOIN District ON Building.DistrictID = District.DistrictID
-				WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/octDistrict3.png" class="image">
-			</div>
-
-			<div class="content_image">
-				<img src="img/railDistrict3.png" class="image">
-			</div>
-
-			<div class="content_image">
-				<img src="img/centDistrict3.png" class="image">
-			</div>
-
-			<h3 id="h3_2_4" class="content_header_second">3 самых высоких здания по районам в более читаемом формате через коррелирующий запрос:</h3>
-
-			<div class="code_block">
-				<pre>
-				SELECT BuildingID, 
-					BuildingNum,
-					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
-					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
-					SumStorey, 
-					SumRoom 
-				FROM Building
-				WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
-				
-				SELECT BuildingID, 
-					BuildingNum,
-					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
-					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
-					SumStorey, 
-					SumRoom 
-				FROM Building
-				WHERE DistrictName LIKE 'Rai%' ORDER BY SumStorey DESC LIMIT 3;
-					
-					
-				SELECT BuildingID, 
-					BuildingNum,
-					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
-					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
-					SumStorey, 
-					SumRoom 
-				FROM Building
-				WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/octDistrict3short.png" class="image">
-			</div>
-
-			<div class="content_image">
-				<img src="img/railDistrict3short.png" class="image">
-			</div>
-
-			<div class="content_image">
-				<img src="img/centDistrict3short.png" class="image">
-			</div>
-
-			<h3 id="h3_2_5" class="content_header_second"> Неудачная попытка вывести 9 самых высоких зданий по районам в одной таблице:</h3>
-
-			<div class="code_block">
-				<pre>
-				SELECT * FROM Building 
-					JOIN Street ON Building.StreetID = Street.StreetID 
-					JOIN District ON Building.DistrictID = District.DistrictID
-				WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3, 
-					AND DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3, 
-					AND DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
-				</pre>
-			</div>
-
-			<div class="content_image">
-				<img src="img/syntaxError.png" class="image">
-			</div>
-
-			<h3 id="h3_2_6" class="content_header_second">Создание трех виртуальных таблиц с тремя максимально высокими зданиями по районам и объединение
-				<br> (UNION не работает, если перед ним стоит ORDER BY): </h3>
-
-			<div class="code_block">
-				<pre>
-				CREATE VIEW October_3_Max_Storey AS
-				SELECT BuildingID, 
-					BuildingNum,
-					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
-					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
-					SumStorey, 
-					SumRoom 
-				FROM Building
-				WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
-					
-
-				CREATE VIEW Rail_3_Max_Storey AS
-				SELECT BuildingID, 
-					BuildingNum,
-					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
-					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
-					SumStorey, 
-					SumRoom 
-				FROM Building
-				WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
-					
-					
-				CREATE VIEW Cent_3_Max_Storey AS
-				SELECT BuildingID, 
-					BuildingNum,
-					(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
-					(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
-					SumStorey, 
-					SumRoom 
-				FROM Building
-				WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
-					
-					
-				SELECT * FROM October_3_Max_Storey;
-				SELECT * FROM Rail_3_Max_Storey;
-				SELECT * FROM Cent_3_Max_Storey;	
-
-
-				SELECT * FROM October_3_Max_Storey
-				UNION ALL
-				SELECT * FROM Rail_3_Max_Storey
-				UNION ALL
-				SELECT * FROM Cent_3_Max_Storey;
-				</pre>
+		<header>
+			<div class="header_conteiner">
+				<h2 id="project" class="header_title">
+					SQLite Project "City"
+				</h2>
+				<h3 id="purpose" class="header_purpose">
+					<i>Цель:</i> Создать базу данных по зданиям в разных районах города. 
+					<br> 
+					Вывести в итоговую таблицу по три самых высоких здания из каждого района города.
+				</h3>
 			</div>	
+		</header>		
 
-			<div class="content_image">
-				<img src="img/result.png" class="image">
+		<div class="content">
+			<div class="left_block"></div>
+
+			<div class="central_block">
+
+				<h3 id="add_table_block" class="content_header_first">
+					1. Создание и заполнение таблиц
+				</h3>
+			
+				<h3 id="h3_1_1" class="content_header_second">
+					Создание таблицы районов:
+				</h3>
+
+				<div class="code_block">
+					<pre> 
+					CREATE TABLE District (
+						DistrictID integer PRIMARY KEY AUTOINCREMENT, 
+						DistrictName text NOT NULL
+					);
+
+					SELECT * FROM District d ;
+					</pre>
+				</div>
+
+				<h3 id="h3_1_2" class="content_header_second">
+					Заполнение таблицы районов:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					INSERT INTO District (DistrictName) 
+						VALUES ('Central District'), ('Rail District'), ('October District');
+
+					SELECT * FROM District d ;
+					</pre>
+				</div>
+			
+				<div class="content_image">
+					<img src="img/districtTable.png" class="image">
+				</div>
+
+				<h3 id="h3_1_3" class="content_header_second">
+					Создание таблицы улиц:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					CREATE TABLE Street (
+						StreetID integer PRIMARY KEY AUTOINCREMENT, 
+						StreetName text NOT NULL,
+						DistrictID integer NOT NULL,
+						FOREIGN KEY (DistrictID) REFERENCES District (DistrictID) ON UPDATE CASCADE
+					);
+					
+					SELECT * FROM Street s ;
+					</pre>
+				</div>
+
+				<h3 id="h3_1_4" class="content_header_second">
+					<span class="color_text">
+						Включение зависимости для внешнего ключа.
+					</span> 
+					В SQLite3 необходимо включать проверку ограничения по внешним ключам при каждом подключении.
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					PRAGMA foreign_keys;  /*проверка на включение 0-выключена, 1-включена */
+
+					PRAGMA foreign_keys = ON;
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/foreignKeyStatus.png" class="image">
+				</div>
+
+				<h3 id="h3_1_5" class="content_header_second"> 
+					Тестовое заполнение на проверку связей:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					INSERT INTO Street (StreetName, DistrictID) 
+						VALUES ('Michurina', 10);
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/foreignKeyFailed.png" class="image">
+				</div>
+
+				<h3 id="h3_1_6" class="content_header_second">
+					Заполнение таблицы улиц:
+				</h3>
+
+				<div class="code_block">
+					<pre>	
+					INSERT INTO Street (StreetName, DistrictID) 
+						VALUES ('Michurina',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
+							('Gogolya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
+							('RedStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
+							('Narymskaya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
+							('905goda',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
+							('RailStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
+							('LineStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
+							('OctoberStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%')),
+							('Kirova',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%')),
+							('Bogatkova',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Oct%'));
+
+					SELECT * FROM Street s ;
+
+					SELECT COUNT(*) FROM Street s ;
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/streetTable.png" class="image">
+				</div>
+
+				<h3 id="h3_1_7" class="content_header_second">
+					Создание таблицы зданий:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					CREATE TABLE Building (
+						BuildingID integer PRIMARY KEY AUTOINCREMENT, 
+						BuildingNum text NOT NULL,
+						StreetID integer NOT NULL, 
+						DistrictID integer NOT NULL, 
+						SumStorey integer NOT NULL, 
+						SumRoom integer NOT NULL,
+						FOREIGN KEY (StreetID) REFERENCES Street(StreetID) ON UPDATE CASCADE,
+						FOREIGN KEY (DistrictID) REFERENCES District(DistrictID) ON UPDATE CASCADE
+					);
+
+					SELECT * FROM Building b ;
+					</pre>
+				</div>
+
+				<h3 id="h3_1_8" class="content_header_second">
+					Тестовое заполнение на проверку связей и пустого значения, далее заполнение таблицы зданий:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
+						VALUES ('1', 15, 10, 10);
+
+
+					INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
+						VALUES 
+						('1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 10, 398);
+
+
+					INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
+						VALUES
+						('38', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 9, 504),
+						('12', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 5, 40),
+						('50', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 5, 10),
+						('51', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 5, 20),
+						('84', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 30, 158),
+						('38', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 6, 34),
+						('21', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 12, 224),
+						('9', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 15, 468),
+						('71', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 16, 84),
+						('80', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 17, 150),
+						('12', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 7, 35),
+						('81', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 9, 64),
+						('50', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 28, 545),
+						('2', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 15, 350),
+						('15', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 6, 70),
+						('98', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 25, 389),
+						('107', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 20, 504),
+						('8/1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 9, 622),
+						('8/2', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 9, 524),
+						('8/3', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 5, 60),
+						('40a', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 30, 1052),
+						('21b', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 17, 452),
+						('40a/1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 13, 65),
+						('252', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 18, 54),
+						('19', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 5, 70),
+						('24', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 17, 108),
+						('18', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 22, 824),
+						('15', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 26, 98),
+						('144', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (
+							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 27, 542);
+
+
+					SELECT * FROM Building b ;
+
+					SELECT COUNT(*) FROM Building b ;
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/emptyValue.png" class="image">
+				</div>
+
+				<div class="content_image">
+					<img src="img/buildingTable.png" class="image">
+				</div>
+
+				<h3 id="requests_block" class="content_header_first">
+					2. Запросы в БД
+				</h3>
+
+				<h3 id="h3_2_1" class="content_header_second">
+					Запрос на список созданных таблиц:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					SELECT name FROM sqlite_master WHERE type='table';
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/tableDB.png" class="image">
+				</div>
+
+				<h3 id="h3_2_2" class="content_header_second">
+					Таблица зданий с указанием наименовай улиц и районов через JOIN:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					SELECT * FROM Building 
+						JOIN Street ON Building.StreetID = Street.StreetID 
+						JOIN District ON Building.DistrictID = District.DistrictID 
+					ORDER BY SumStorey DESC, DistrictName DESC;
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/JOIN.png" class="image">
+				</div>
+
+				<h3 id="h3_2_3" class="content_header_second">
+					3 самых высоких здания отдельно по районам через JOIN 3-х таблиц:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					SELECT * FROM Building 
+						JOIN Street ON Building.StreetID = Street.StreetID 
+						JOIN District ON Building.DistrictID = District.DistrictID
+					WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
+
+
+					SELECT * FROM Building 
+						JOIN Street ON Building.StreetID = Street.StreetID 
+						JOIN District ON Building.DistrictID = District.DistrictID
+					WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
+
+
+					SELECT * FROM Building 
+						JOIN Street ON Building.StreetID = Street.StreetID 
+						JOIN District ON Building.DistrictID = District.DistrictID
+					WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/octDistrict3.png" class="image">
+				</div>
+
+				<div class="content_image">
+					<img src="img/railDistrict3.png" class="image">
+				</div>
+
+				<div class="content_image">
+					<img src="img/centDistrict3.png" class="image">
+				</div>
+
+				<h3 id="h3_2_4" class="content_header_second">
+					3 самых высоких здания по районам в более читаемом формате через коррелирующий запрос:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					SELECT BuildingID, 
+						BuildingNum,
+						(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
+						(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
+						SumStorey, 
+						SumRoom 
+					FROM Building
+					WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
+					
+					SELECT BuildingID, 
+						BuildingNum,
+						(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
+						(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
+						SumStorey, 
+						SumRoom 
+					FROM Building
+					WHERE DistrictName LIKE 'Rai%' ORDER BY SumStorey DESC LIMIT 3;
+						
+						
+					SELECT BuildingID, 
+						BuildingNum,
+						(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
+						(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
+						SumStorey, 
+						SumRoom 
+					FROM Building
+					WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/octDistrict3short.png" class="image">
+				</div>
+
+				<div class="content_image">
+					<img src="img/railDistrict3short.png" class="image">
+				</div>
+
+				<div class="content_image">
+					<img src="img/centDistrict3short.png" class="image">
+				</div>
+
+				<h3 id="h3_2_5" class="content_header_second"> 
+					Неудачная попытка вывести 9 самых высоких зданий по районам в одной таблице:
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					SELECT * FROM Building 
+						JOIN Street ON Building.StreetID = Street.StreetID 
+						JOIN District ON Building.DistrictID = District.DistrictID
+					WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3, 
+						AND DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3, 
+						AND DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
+					</pre>
+				</div>
+
+				<div class="content_image">
+					<img src="img/syntaxError.png" class="image">
+				</div>
+
+				<h3 id="h3_2_6" class="content_header_second">
+					Создание трех виртуальных таблиц с тремя максимально высокими зданиями по районам и объединение
+					<br> (UNION не работает, если перед ним стоит ORDER BY): 
+				</h3>
+
+				<div class="code_block">
+					<pre>
+					CREATE VIEW October_3_Max_Storey AS
+					SELECT BuildingID, 
+						BuildingNum,
+						(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
+						(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
+						SumStorey, 
+						SumRoom 
+					FROM Building
+					WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3;
+						
+
+					CREATE VIEW Rail_3_Max_Storey AS
+					SELECT BuildingID, 
+						BuildingNum,
+						(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
+						(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
+						SumStorey, 
+						SumRoom 
+					FROM Building
+					WHERE DistrictName LIKE 'Rail%' ORDER BY SumStorey DESC LIMIT 3;
+						
+						
+					CREATE VIEW Cent_3_Max_Storey AS
+					SELECT BuildingID, 
+						BuildingNum,
+						(SELECT StreetName FROM Street WHERE Street.StreetID = Building.StreetID) AS StreetName, 
+						(SELECT DistrictName FROM District WHERE District.DistrictID = Building.DistrictID) AS DistrictName, 
+						SumStorey, 
+						SumRoom 
+					FROM Building
+					WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
+						
+						
+					SELECT * FROM October_3_Max_Storey;
+					SELECT * FROM Rail_3_Max_Storey;
+					SELECT * FROM Cent_3_Max_Storey;	
+
+
+					SELECT * FROM October_3_Max_Storey
+					UNION ALL
+					SELECT * FROM Rail_3_Max_Storey
+					UNION ALL
+					SELECT * FROM Cent_3_Max_Storey;
+					</pre>
+				</div>	
+
+				<div class="content_image">
+					<img src="img/result.png" class="image">
+				</div>
 			</div>
+			
+			<div class="right_block"></div>
 
 		</div>	
+		
 		<div class="footer">
-			<h2 id="footer_1">
-				Project by Ekaterina Kutiminskaya</h2>
+			<div class="footer_conteiner">
+				Project by Ekaterina Kutiminskaya</div>
 		</div>		
 	</div>		
 </body>
