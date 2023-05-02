@@ -21,10 +21,10 @@ body {
 }
 
 .header_conteiner {
-    background-color: rgb(154, 243, 159, 0.5);
+    background-color: rgb(250, 253, 255);
     display: inline-block;
     width: 100%;
-    border: 1px solid black;                 
+    border-bottom: 1px solid rgb(221, 231, 247);                
     box-sizing: border-box;
     padding: 0.5% 2%;
 }
@@ -108,8 +108,8 @@ pre {
 
 
 .code_block {
-    background-color: rgba(240, 231, 231, 0.4);    
-    border: 1px solid rgb(201, 184, 184); 
+    background-color: rgba(250, 253, 255);    
+    border: 1px solid rgb(221, 231, 247); 
     border-radius: 5px;
     display: inline-block;                       
     margin-left: auto;
@@ -133,9 +133,9 @@ pre {
 
 
 .footer_conteiner {
-    background-color: rgba(154, 243, 159, 0.5);
+    background-color: rgba(250, 253, 255);
     width: 100%;
-    border: 1px solid black;                 
+    border-top: 1px solid rgba(221, 231, 247);                 
     box-sizing: border-box;
     padding: 0.5% 2%;
     text-align: right;
