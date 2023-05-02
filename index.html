@@ -89,7 +89,7 @@
 
 				<div class="code_block">
 					<pre> <code>
-					PRAGMA foreign_keys;  /*проверка на включение 0-выключена, 1-включена */
+					PRAGMA foreign_keys;  <span id="code_block_comment">/*проверка на включение 0-выключена, 1-включена */</span>
 
 					PRAGMA foreign_keys = ON;
 					</code> </pre>
@@ -121,7 +121,8 @@
 				<div class="code_block">
 					<pre> <code>
 					INSERT INTO Street (StreetName, DistrictID) 
-						VALUES ('Michurina',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
+						VALUES 
+							('Michurina',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
 							('Gogolya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
 							('RedStreet',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Cen%')),
 							('Narymskaya',(SELECT DistrictID FROM District WHERE DistrictName LIKE 'Ra%')),
@@ -181,64 +182,35 @@
 
 					INSERT INTO Building (BuildingNum, StreetID, DistrictID, SumStorey, SumRoom) 
 						VALUES
-						('38', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 9, 504),
-						('12', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 5, 40),
-						('50', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 5, 10),
-						('51', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 5, 20),
-						('84', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 30, 158),
-						('38', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 6, 34),
-						('21', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 12, 224),
-						('9', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 15, 468),
-						('71', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 16, 84),
-						('80', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 17, 150),
-						('12', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 7, 35),
-						('81', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 9, 64),
-						('50', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 28, 545),
-						('2', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 15, 350),
-						('15', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 6, 70),
-						('98', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 25, 389),
-						('107', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 20, 504),
-						('8/1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 9, 622),
-						('8/2', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 9, 524),
-						('8/3', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 5, 60),
-						('40a', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 30, 1052),
-						('21b', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 17, 452),
-						('40a/1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 13, 65),
-						('252', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 18, 54),
-						('19', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 5, 70),
-						('24', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 17, 108),
-						('18', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 22, 824),
-						('15', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 26, 98),
-						('144', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (
-							SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 27, 542);
+						('38', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 9, 504),
+						('12', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Gogol%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Gogo%'), 5, 40),
+						('50', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 5, 10),
+						('51', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 5, 20),
+						('84', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Red%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Red%'), 30, 158),
+						('38', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 6, 34),
+						('21', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 12, 224),
+						('9', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Nar%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Nar%'), 15, 468),
+						('71', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 16, 84),
+						('80', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 17, 150),
+						('12', (SELECT StreetID FROM Street WHERE StreetName LIKE '905%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE '905%'), 7, 35),
+						('81', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 9, 64),
+						('50', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 28, 545),
+						('2', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Lin%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Lin%'), 15, 350),
+						('15', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 6, 70),
+						('98', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 25, 389),
+						('107', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Mi%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Mi%'), 20, 504),
+						('8/1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 9, 622),
+						('8/2', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 9, 524),
+						('8/3', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Rai%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Rail%'), 5, 60),
+						('40a', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 30, 1052),
+						('21b', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 17, 452),
+						('40a/1', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Oct%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Oct%'), 13, 65),
+						('252', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 18, 54),
+						('19', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), ( DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 5, 70),
+						('24', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Bog%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Bog%'), 17, 108),
+						('18', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 22, 824),
+						('15', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 26, 98),
+						('144', (SELECT StreetID FROM Street WHERE StreetName LIKE 'Kir%'), (SELECT DistrictID FROM Street WHERE StreetName LIKE 'Kir%'), 27, 542);
 
 
 					SELECT * FROM Building b ;

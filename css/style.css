@@ -55,7 +55,7 @@ body {
 .left_block, .central_block, .right_block {
     display: inline-block;            
     padding: 10px;
-    font-size: 14px;          
+    font-size: 14px;        
     box-sizing: border-box;
     height: 100%;
     vertical-align: top;
@@ -64,15 +64,13 @@ body {
 
 .left_block {
     width: 7%;
-    
-       
+           
 }
 
 
 .central_block {
     width: 86%;
-    
-    
+          
 }
 
 
@@ -81,17 +79,33 @@ body {
 }
 
 
+.code_block {
+    background-color: rgba(250, 253, 255);    
+    border: 1px solid rgb(221, 231, 247); 
+    border-radius: 5px;
+    display: inline-block;                       
+    margin-left: auto;
+    margin-right: auto; 
+    width: 100%; 
+    box-sizing: border-box;
+
+}
+ 
+
 pre {
     display: block;
-    margin-left: -250px;
     max-width: 90%;
-    overflow-x: auto;
-    white-space: pre-wrap;       /* варианты переноса строки в разных браузерах css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-   
+    /*white-space: pre-wrap;       /* варианты переноса строки в разных браузерах css-3 */
+    /*white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    /*white-space: -pre-wrap;      /* Opera 4-6 */
+    /*white-space: -o-pre-wrap;    /* Opera 7 */
+    /*word-wrap: break-word;       /* Internet Explorer 5.5+ */     
+    box-sizing: border-box;
+    overflow: auto;
+    white-space: pre-line;
+    margin-left: 25px;  
+    margin-top: -5px;
+
 }
 
 
@@ -106,18 +120,9 @@ pre {
     
 }
 
-
-.code_block {
-    background-color: rgba(250, 253, 255);    
-    border: 1px solid rgb(221, 231, 247); 
-    border-radius: 5px;
-    display: inline-block;                       
-    margin-left: auto;
-    margin-right: auto; 
-    width: 100%; 
-    box-sizing: border-box;
+#code_block_comment {
+    color: gray;
 }
- 
 
 .right_block {
    width: 7%;
