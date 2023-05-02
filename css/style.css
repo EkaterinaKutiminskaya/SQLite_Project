@@ -87,7 +87,7 @@ body {
     margin-left: auto;
     margin-right: auto; 
     width: 100%; 
-    box-sizing: border-box;
+    box-sizing: border-box; 
 
 }
  
@@ -95,16 +95,12 @@ body {
 pre {
     display: block;
     max-width: 90%;
-    /*white-space: pre-wrap;       /* варианты переноса строки в разных браузерах css-3 */
-    /*white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    /*white-space: -pre-wrap;      /* Opera 4-6 */
-    /*white-space: -o-pre-wrap;    /* Opera 7 */
-    /*word-wrap: break-word;       /* Internet Explorer 5.5+ */     
     box-sizing: border-box;
-    overflow: auto;
-    white-space: pre-line;
+    overflow-x: auto;
+    white-space: pre;
     margin-left: 25px;  
     margin-top: -5px;
+
 
 }
 
