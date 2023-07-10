@@ -60,7 +60,7 @@ SELECT * FROM District d ;
 				</div>
 			
 				<div class="content_image">
-					<img src="img/districtTable.png" class="image">
+					<img src="img/districtTable.png" class="image" alt="Таблица районов">
 				</div>
 
 				<h3 id="h3_1_3" class="content_header_second">
@@ -96,7 +96,7 @@ PRAGMA foreign_keys = ON;
 				</div>
 
 				<div class="content_image">
-					<img src="img/foreignKeyStatus.png" class="image">
+					<img src="img/foreignKeyStatus.png" class="image" alt="Ключ включен">
 				</div>
 
 				<h3 id="h3_1_5" class="content_header_second"> 
@@ -111,7 +111,7 @@ INSERT INTO Street (StreetName, DistrictID)
 				</div>
 
 				<div class="content_image">
-					<img src="img/foreignKeyFailed.png" class="image">
+					<img src="img/foreignKeyFailed.png" class="image" alt="Проверка ограничения по внешнему ключу">
 				</div>
 
 				<h3 id="h3_1_6" class="content_header_second">
@@ -140,7 +140,7 @@ SELECT COUNT(*) FROM Street s ;
 				</div>
 
 				<div class="content_image">
-					<img src="img/streetTable.png" class="image">
+					<img src="img/streetTable.png" class="image" alt="Таблица улиц">
 				</div>
 
 				<h3 id="h3_1_7" class="content_header_second">
@@ -219,11 +219,11 @@ SELECT COUNT(*) FROM Building b ;
 				</div>
 
 				<div class="content_image">
-					<img src="img/emptyValue.png" class="image">
+					<img src="img/emptyValue.png" class="image" alt="Проверка на пустое значение">
 				</div>
 
 				<div class="content_image">
-					<img src="img/buildingTable.png" class="image">
+					<img src="img/buildingTable.png" class="image" alt="Таблица зданий">
 				</div>
 
 				<h3 id="requests_block" class="content_header_first">
@@ -241,11 +241,11 @@ SELECT name FROM sqlite_master WHERE type='table';
 				</div>
 
 				<div class="content_image">
-					<img src="img/tableDB.png" class="image">
+					<img src="img/tableDB.png" class="image" alt="Список таблиц в БД">
 				</div>
 
 				<h3 id="h3_2_2" class="content_header_second">
-					Таблица зданий с указанием наименовай улиц и районов через JOIN:
+					Таблица зданий с указанием наименований улиц и районов через JOIN:
 				</h3>
 
 				<div class="code_block">
@@ -258,11 +258,11 @@ ORDER BY SumStorey DESC, DistrictName DESC;
 				</div>
 
 				<div class="content_image">
-					<img src="img/JOIN.png" class="image">
+					<img src="img/JOIN.png" class="image" alt="Таблица зданий с наименованием улиц и районов">
 				</div>
 
 				<h3 id="h3_2_3" class="content_header_second">
-					3 самых высоких здания отдельно по районам через JOIN 3-х таблиц:
+					3 самых высоких здания отдельно по районам через JOIN:
 				</h3>
 
 				<div class="code_block">
@@ -287,15 +287,15 @@ WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 				</div>
 
 				<div class="content_image">
-					<img src="img/octDistrict3.png" class="image">
+					<img src="img/octDistrict3.png" class="image" alt="Таблица с 3 высокими зданиями в октябрьском районе">
 				</div>
 
 				<div class="content_image">
-					<img src="img/railDistrict3.png" class="image">
+					<img src="img/railDistrict3.png" class="image" alt="Таблица с 3 высокими зданиями в ж/д районе">
 				</div>
 
 				<div class="content_image">
-					<img src="img/centDistrict3.png" class="image">
+					<img src="img/centDistrict3.png" class="image" alt="Таблица с 3 высокими зданиями в центральном районе">
 				</div>
 
 				<h3 id="h3_2_4" class="content_header_second">
@@ -335,15 +335,15 @@ WHERE DistrictName LIKE 'Cen%' ORDER BY SumStorey DESC LIMIT 3;
 				</div>
 
 				<div class="content_image">
-					<img src="img/octDistrict3short.png" class="image">
+					<img src="img/octDistrict3short.png" class="image" alt="Короткая таблица с 3 высокими зданиями в октябрьском районе">
 				</div>
 
 				<div class="content_image">
-					<img src="img/railDistrict3short.png" class="image">
+					<img src="img/railDistrict3short.png" class="image" alt="Короткая таблица с 3 высокими зданиями в ж/д районе">
 				</div>
 
 				<div class="content_image">
-					<img src="img/centDistrict3short.png" class="image">
+					<img src="img/centDistrict3short.png" class="image" alt="Короткая таблица с 3 высокими зданиями в центральном районе">
 				</div>
 
 				<h3 id="h3_2_5" class="content_header_second"> 
@@ -362,7 +362,7 @@ WHERE DistrictName LIKE 'Oct%' ORDER BY SumStorey DESC LIMIT 3,
 				</div>
 
 				<div class="content_image">
-					<img src="img/syntaxError.png" class="image">
+					<img src="img/syntaxError.png" class="image" alt="Синтаксическая ошибка">
 				</div>
 
 				<h3 id="h3_2_6" class="content_header_second">
@@ -418,7 +418,7 @@ SELECT * FROM Cent_3_Max_Storey;
 				</div>	
 
 				<div class="content_image">
-					<img src="img/result.png" class="image">
+					<img src="img/result.png" class="image" alt="Таблица с тремя самыми высокими зданиями в каждом из районов">
 				</div>
 			</div>
 			
